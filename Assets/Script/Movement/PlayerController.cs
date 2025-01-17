@@ -15,11 +15,10 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
-    
+
     // UI Cooldown
     public Image dashCooldownImage;
     public TextMeshProUGUI dashCooldownText;
-
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -28,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private float dashCooldownTime;
 
     private float moveInput;
+    private bool isFacingRight = true; // ตัวแปรตรวจสอบทิศทางที่ผู้เล่นหันหน้า
 
     void Start()
     {
@@ -58,9 +58,11 @@ public class PlayerController : MonoBehaviour
         {
             StartDash();
         }
-        
+
         UpdateDashCooldownUI();
 
+        // หันหน้าตามตำแหน่งเมาส์ทางซ้ายหรือขวา
+        FlipTowardsMouse();
     }
 
     void StartDash()
@@ -80,6 +82,31 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = false;
         rb.velocity = new Vector2(0, rb.velocity.y); // หยุดความเร็ว Dash
+    }
+
+    void FlipTowardsMouse()
+    {
+        // รับตำแหน่งเมาส์ในโลก 2D
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // เช็คว่าตำแหน่งเมาส์อยู่ทางซ้ายหรือขวาของตัวละคร
+        if (mousePosition.x > transform.position.x && !isFacingRight)
+        {
+            Flip();
+        }
+        else if (mousePosition.x < transform.position.x && isFacingRight)
+        {
+            Flip();
+        }
+    }
+
+    void Flip()
+    {
+        // เปลี่ยนทิศทางการหันหน้าของตัวผู้เล่น
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1;
+        transform.localScale = localScale;
     }
 
     void UpdateDashCooldownUI()
