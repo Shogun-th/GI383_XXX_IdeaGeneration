@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     {
         // ดึง Component Rigidbody2D มาใช้งาน
         rb = GetComponent<Rigidbody2D>();
+
+        // ตั้งค่าเริ่มต้นของ HP
+        GameManager.Instance.ResetHealth();
     }
 
     void Update()
@@ -63,6 +66,18 @@ public class PlayerController : MonoBehaviour
 
         // หันหน้าตามตำแหน่งเมาส์ทางซ้ายหรือขวา
         FlipTowardsMouse();
+
+        // การลด HP ด้วยการทดสอบ
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            TakeDamage(10);
+        }
+
+        // การเพิ่ม HP ด้วยการทดสอบ
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Heal(10);
+        }
     }
 
     void StartDash()
@@ -130,6 +145,29 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        GameManager.Instance.DecreaseHealth(damage);
+        Debug.Log("Current HP: " + GameManager.Instance.GetHealth());
+
+        if (GameManager.Instance.GetHealth() <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Heal(int amount)
+    {
+        GameManager.Instance.IncreaseHealth(amount);
+        Debug.Log("Current HP after healing: " + GameManager.Instance.GetHealth());
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player has died!");
+        // ใส่ logic เมื่อตัวละครตาย เช่นหยุดการเคลื่อนไหวหรือรีเซ็ตเกม
     }
 
     private void OnDrawGizmosSelected()
