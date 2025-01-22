@@ -12,7 +12,7 @@ public class PlayerStats : MonoBehaviour
     public float maxHealth; // HP ที่เต็มหรือค่าปลาย
     public float CurrentHealth; // HP ที่เหลือตอนนี้
     public GameObject gameOverUI;
-
+    
     
     [Header("===== HEAL POTION =====")]
     [SerializeField] private int healAmount = 20; // จำนวน HP ที่ Heal ได้ต่อครั้ง
@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Sprite potionUsedTwiceSprite; // รูปภาพ Potion ดื่มครั้งที่ 2
     [SerializeField] private Sprite emptyPotionSprite; // รูปภาพ Potion ดื่มครั้งที่ 3
     [SerializeField] private TextMeshProUGUI potionCountText; // UI Text สำหรับแสดงจำนวน Potion ที่เหลือ
-
+    
     private void Awake()
     {
         Instance = this;
