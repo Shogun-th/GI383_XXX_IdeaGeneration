@@ -13,7 +13,6 @@ public class PlayerStats : MonoBehaviour
     public float CurrentHealth; // HP ที่เหลือตอนนี้
     public GameObject gameOverUI;
     
-    
     [Header("===== HEAL POTION =====")]
     [SerializeField] private int healAmount = 20; // จำนวน HP ที่ Heal ได้ต่อครั้ง
     [SerializeField] private int maxPotionUses = 3; // จำนวนครั้งสูงสุดที่ใช้ได้
@@ -30,7 +29,7 @@ public class PlayerStats : MonoBehaviour
     {
         Instance = this;
     }
-
+    
     private void Start()
     {
         CurrentHealth = maxHealth;
@@ -48,7 +47,6 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    
     private void FixedUpdate()
     {
         HealthBar.instance.SetHealth(CurrentHealth);

@@ -15,6 +15,9 @@ public class Checkpoint : MonoBehaviour
 
             // รีเซ็ต Potion Heal ผ่าน PlayerStats
             PlayerStats.Instance.ResetPotion();
+            
+            // รีเซ็ต  HP ผ่าน PlayerStats
+            PlayerStats.Instance.CurrentHealth = PlayerStats.Instance.maxHealth;
 
             // ปิดการทำงานของ Trigger
             trigger.enabled = false;
