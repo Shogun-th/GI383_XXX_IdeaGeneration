@@ -17,4 +17,26 @@ public class RespawnController : MonoBehaviour
             collision.transform.position = respawnPoint.position;   
         }
     }
+    public void Reborn()
+    {
+
+        if (respawnPoint != null)
+        {
+            Debug.Log("Respawning player...");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                player.transform.position = respawnPoint.position;
+            }
+            else
+            {
+                Debug.LogWarning("Player not found for respawn!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Respawn point not set!");
+        }
+
+    }
 }
