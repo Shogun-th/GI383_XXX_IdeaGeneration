@@ -60,8 +60,12 @@ public class PlayerStats : MonoBehaviour
 
         if (CurrentHealth <= 0 || CurrentHealth == 0)
         {
-            Time.timeScale = 0f;
-            gameOverUI.SetActive(true);
+            Debug.Log("Player died. Respawning...");
+            RespawnController.instance.Reborn(); // เรียกใช้ RespawnController
+            CurrentHealth = maxHealth; // รีเซ็ต HP
+
+            //Time.timeScale = 0f;
+            //gameOverUI.SetActive(true);
         }
         UpdateHealthUI();
     }
