@@ -4,26 +4,26 @@ using UnityEngine.UI; // สำหรับ UI
 public class PlayerCombat : MonoBehaviour
 {
     public GameObject projectilePrefab; // Prefab ของ Projectile (ลูกธนู)
-    public Transform shootPoint;        // จุดที่ยิง Projectile ออกมา
-    public float shootForce = 20f;      // ความแรงที่ใช้ยิง Projectile
-    public float shootCooldown = 1f;    // Cooldown ระหว่างการยิง
+    public Transform shootPoint; // จุดที่ยิง Projectile ออกมา
+    public float shootForce = 20f; // ความแรงที่ใช้ยิง Projectile
+    public float shootCooldown = 1f; // Cooldown ระหว่างการยิง
     public float projectileLifetime = 4f; // ระยะเวลาที่ลูกธนูจะหายไป
     public float skillKnockbackForce = 5f; // แรงกระแทกเมื่อใช้สกิล
-    public float skillCooldown = 3f;   // Cooldown ของสกิล
+    public float skillCooldown = 3f; // Cooldown ของสกิล
 
-    public float maxChargeTime = 2f;      // เวลาชาร์จสูงสุด
-    public float minShootForce = 10f;     // ความแรงขั้นต่ำของการยิง
-    public float maxShootForce = 40f;     // ความแรงสูงสุดของการยิง
-    private float chargeTime = 0f;        // เวลาในการชาร์จ
-    private bool isCharging = false;      // สถานะการชาร์จ
+    public float maxChargeTime = 2f; // เวลาชาร์จสูงสุด
+    public float minShootForce = 10f; // ความแรงขั้นต่ำของการยิง
+    public float maxShootForce = 40f; // ความแรงสูงสุดของการยิง
+    private float chargeTime = 0f; // เวลาในการชาร์จ
+    private bool isCharging = false; // สถานะการชาร์จ
 
-    public Image chargeUI;                // UI สำหรับแสดงสถานะการชาร์จ
-    public Canvas canvas;                 // อ้างอิงถึง Canvas
-    private RectTransform chargeUIRect;   // RectTransform ของ UI
+    public Image chargeUI; // UI สำหรับแสดงสถานะการชาร์จ
+    public Canvas canvas; // อ้างอิงถึง Canvas
+    private RectTransform chargeUIRect; // RectTransform ของ UI
 
     public Vector3 uiOffset = new Vector3(0, 1f, 0); // ตำแหน่ง Offset ของ UI เหนือ Player
 
-    private float nextSkillTime = 0f;  // เวลาในการใช้สกิลครั้งถัดไป
+    private float nextSkillTime = 0f; // เวลาในการใช้สกิลครั้งถัดไป
     private const float arrowOffsetAngle = 45f; // มุมเริ่มต้นของลูกธนู (ตะวันออกเฉียงเหนือ)
 
     void Start()
@@ -63,8 +63,9 @@ public class PlayerCombat : MonoBehaviour
             {
                 ShootProjectile(); // ยิงลูกธนู
             }
+
             isCharging = false; // รีเซ็ตสถานะการชาร์จ
-            chargeTime = 0f;    // รีเซ็ตเวลาในการชาร์จ
+            chargeTime = 0f; // รีเซ็ตเวลาในการชาร์จ
 
             // รีเซ็ต UI การชาร์จ
             if (chargeUI != null)
@@ -128,6 +129,7 @@ public class PlayerCombat : MonoBehaviour
             projectileCollider = projectile.AddComponent<BoxCollider2D>();
             projectileCollider.isTrigger = true;
         }
+
         if (!projectile.TryGetComponent<Rigidbody2D>(out _))
         {
             Rigidbody2D rb = projectile.AddComponent<Rigidbody2D>();
@@ -159,10 +161,11 @@ public class PlayerCombat : MonoBehaviour
         Vector2 baseDirection = (mousePosition - shootPoint.position).normalized;
 
         // ยิงลูกดอก 3 ทิศทาง
-        Vector2[] directions = {
-            baseDirection,                                   // ทิศทางตรงไปที่เมาส์
-            Quaternion.Euler(0, 0, 30) * baseDirection,     // ทิศทางเฉียงขึ้น 30 องศา
-            Quaternion.Euler(0, 0, -30) * baseDirection     // ทิศทางเฉียงลง 30 องศา
+        Vector2[] directions =
+        {
+            baseDirection, // ทิศทางตรงไปที่เมาส์
+            Quaternion.Euler(0, 0, 30) * baseDirection, // ทิศทางเฉียงขึ้น 30 องศา
+            Quaternion.Euler(0, 0, -30) * baseDirection // ทิศทางเฉียงลง 30 องศา
         };
 
         foreach (Vector2 direction in directions)
@@ -183,6 +186,7 @@ public class PlayerCombat : MonoBehaviour
                 projectileCollider = projectile.AddComponent<BoxCollider2D>();
                 projectileCollider.isTrigger = true;
             }
+
             if (!projectile.TryGetComponent<Rigidbody2D>(out _))
             {
                 Rigidbody2D rb = projectile.AddComponent<Rigidbody2D>();
@@ -204,7 +208,6 @@ public class PlayerCombat : MonoBehaviour
             Destroy(projectile, projectileLifetime);
         }
     }
-}
 
     public class ProjectileBehavior : MonoBehaviour
     {
@@ -215,4 +218,5 @@ public class PlayerCombat : MonoBehaviour
             // ทำลายลูกธนูเมื่อชนกับวัตถุใด ๆ
             Destroy(gameObject);
         }
+    }
 }
