@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 1f;
+    private float originalMoveSpeed;
 
     // ตัวแปรสำหรับการตรวจจับพื้น
     public Transform groundCheck;
@@ -40,6 +41,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // หากมีการเปิด Dialogue ให้หยุดการเคลื่อนไหว
+        if (DialogueManager.Instance.isDialogueActive)
+        {
+            if (moveSpeed != 0f) // เก็บค่าความเร็วเดิมก่อนหยุด
+            {
+                originalMoveSpeed = moveSpeed;
+                moveSpeed = 0f;
+            }
+            return;
+        }
+        else if (moveSpeed == 0f && !DialogueManager.Instance.isDialogueActive) // หาก Dialogue ปิดและ moveSpeed ยังเป็น 0
+        {
+            moveSpeed = originalMoveSpeed; // คืนค่าความเร็วเดิม
+        }
         // การตรวจจับว่าผู้เล่นอยู่บนพื้นหรือไม่
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
