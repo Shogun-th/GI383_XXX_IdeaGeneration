@@ -20,6 +20,8 @@ public class DialogueManager : MonoBehaviour
 
     public Animator animator;
 
+    private Coroutine typingCoroutine;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,8 +34,9 @@ public class DialogueManager : MonoBehaviour
     {
         isDialogueActive = true;
 
+        // แสดง UI และเริ่ม Dialogue
         animator.Play("show");
-
+        Time.timeScale = 0f; // หยุดเวลาในเกม
         lines.Clear();
 
         foreach (Dialogueline dialogueLine in dialogue.dialoguelines)
@@ -57,9 +60,11 @@ public class DialogueManager : MonoBehaviour
         characterIcon.sprite = currentLine.character.icon;
         characterName.text = currentLine.character.name;
 
-        StopAllCoroutines();
+        // หยุด Coroutine ก่อนเริ่มใหม่ (ป้องกันปัญหาหลาย Coroutine ทำงานซ้อนกัน)
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
 
-        StartCoroutine(TypeSentence(currentLine));
+        typingCoroutine = StartCoroutine(TypeSentence(currentLine));
     }
 
     IEnumerator TypeSentence(Dialogueline dialogueLine)
@@ -68,13 +73,16 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in dialogueLine.line.ToCharArray())
         {
             dialogueArea.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            yield return new WaitForSecondsRealtime(typingSpeed); // ใช้ WaitForSecondsRealtime เพื่อไม่ให้หยุดเมื่อ Time.timeScale = 0
         }
     }
 
     void EndDialogue()
     {
         isDialogueActive = false;
+
+        // ซ่อน UI และคืนค่าเวลาในเกม
         animator.Play("hide");
+        Time.timeScale = 1f; // คืนค่าเวลาในเกม
     }
 }

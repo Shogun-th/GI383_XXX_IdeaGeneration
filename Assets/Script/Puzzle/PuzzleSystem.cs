@@ -11,7 +11,7 @@ public class PuzzleSystem : MonoBehaviour
     public Button submitButton;           // ปุ่มยืนยันคำตอบ
     public GameObject targetObject;       // Object ที่จะหายไปเมื่อแก้ Puzzle สำเร็จ
     public GameObject interactImage;      // UI Image ที่จะแสดงเมื่อเข้าใกล้
-    public Vector3 imageOffset = new Vector3(0, 20f, 0); // Offset ของ Interact Image
+    public Vector3 imageOffset = new Vector3(0, 1.5f, 0); // Offset ของ Interact Image
 
     private int number1;                  // ตัวเลขที่ 1 ของคำถาม
     private int number2;                  // ตัวเลขที่ 2 ของคำถาม
@@ -37,6 +37,12 @@ public class PuzzleSystem : MonoBehaviour
         if (playerInRange && !puzzleSolved && Input.GetKeyDown(KeyCode.E))
         {
             OpenPuzzlePanel();
+        }
+
+        // ตรวจสอบว่าผู้เล่นกดปุ่ม Escape เพื่อปิด Panel
+        if (puzzlePanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClosePuzzlePanel();
         }
 
         // อัปเดตตำแหน่งของ Interact Image ให้ติดตาม Object
@@ -95,13 +101,7 @@ public class PuzzleSystem : MonoBehaviour
             Destroy(targetObject);
         }
     }
-
-    private void OpenPuzzlePanel()
-    {
-        // แสดง Panel และหยุดเวลา
-        puzzlePanel.SetActive(true);
-        Time.timeScale = 0f;
-    }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -131,5 +131,22 @@ public class PuzzleSystem : MonoBehaviour
 
         // อัปเดตตำแหน่งของ Interact Image
         interactImage.transform.position = screenPosition;
+    }
+    
+    private void OpenPuzzlePanel()
+    {
+        // แสดง Panel และหยุดเวลา
+        puzzlePanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ClosePuzzlePanel()
+    {
+        // ซ่อน Panel และคืนค่าเวลา
+        puzzlePanel.SetActive(false);
+        Time.timeScale = 1f;
+
+        // เพิ่มการแจ้งเตือนใน Console
+        Debug.Log("Puzzle Panel Closed");
     }
 }

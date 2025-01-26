@@ -41,20 +41,21 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // หากมีการเปิด Dialogue ให้หยุดการเคลื่อนไหว
+        // หากมีการเปิด Dialogue ให้หยุดเวลา
         if (DialogueManager.Instance.isDialogueActive)
         {
-            if (moveSpeed != 0f) // เก็บค่าความเร็วเดิมก่อนหยุด
+            if (Time.timeScale != 0f) // ตรวจสอบว่าเวลายังไม่ได้หยุด
             {
-                originalMoveSpeed = moveSpeed;
-                moveSpeed = 0f;
+                Time.timeScale = 0f; // หยุดเวลา
             }
             return;
         }
-        else if (moveSpeed == 0f && !DialogueManager.Instance.isDialogueActive) // หาก Dialogue ปิดและ moveSpeed ยังเป็น 0
+        else if (!DialogueManager.Instance.isDialogueActive && Time.timeScale == 0f) // หาก Dialogue ปิดและเวลายังหยุดอยู่
         {
-            moveSpeed = originalMoveSpeed; // คืนค่าความเร็วเดิม
+            Time.timeScale = 1f; // คืนค่าเวลา
         }
+        
+        
         // การตรวจจับว่าผู้เล่นอยู่บนพื้นหรือไม่
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -101,12 +102,19 @@ public class PlayerController : MonoBehaviour
         dashTime = Time.time + dashDuration;
         dashCooldownTime = Time.time + dashCooldown;
 
-        // เพิ่มความเร็ว Dash ในทิศทางการเคลื่อนไหวปัจจุบัน
-        rb.velocity = new Vector2(moveInput * dashSpeed, rb.velocity.y);
+        // รับตำแหน่งเมาส์ในโลก 2D
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // คำนวณทิศทางจากตำแหน่งผู้เล่นไปยังเมาส์
+        Vector2 dashDirection = (mousePosition - transform.position).normalized;
+
+        // เพิ่มความเร็ว Dash ในทิศทางของเมาส์
+        rb.velocity = dashDirection * dashSpeed;
 
         // เรียก StopDash หลังจากเวลาที่กำหนด
         Invoke(nameof(StopDash), dashDuration);
     }
+
 
     void StopDash()
     {
