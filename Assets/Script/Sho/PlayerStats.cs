@@ -150,4 +150,6 @@ public class PlayerStats : MonoBehaviour
             potionCountText.text = $"{remainingPotionUses}";
         }
     }
+    
+    
 }

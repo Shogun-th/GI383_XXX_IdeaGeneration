@@ -1,5 +1,4 @@
-﻿ using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class EnemyAi : MonoBehaviour
@@ -17,11 +16,14 @@ public class EnemyAi : MonoBehaviour
     private float currentHealth;
     private bool isPatrolling = true;
     private bool facingRight = true;
+    private bool isStunned = false;
 
     public Transform groundCheck;
-    public Transform detectionOrigin;
     public float groundCheckDistance = 0.5f;
-    public float detectionVisualRadius = 0.2f;
+
+    public Rigidbody2D rb; // Rigidbody2D ของศัตรู
+    public float knockbackForce = 5f; // แรงกระเด็นถอยหลังเมื่อโดนโจมตี
+    public float stunDuration = 1f; // ระยะเวลาที่ศัตรูถูกทำให้หยุดชะงัก
 
     private void Start()
     {
@@ -31,6 +33,9 @@ public class EnemyAi : MonoBehaviour
 
     private void Update()
     {
+        if (isStunned)
+            return; // ถ้าศัตรูถูกทำให้หยุดชะงัก จะไม่สามารถทำงานอื่นได้
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= detectionRange)
@@ -113,23 +118,42 @@ public class EnemyAi : MonoBehaviour
 
     private void DrawDetectionVisuals()
     {
-        // วาดเส้นแสดงระยะตรวจจับ
         Debug.DrawLine(transform.position, transform.position + Vector3.right * detectionRange * (facingRight ? 1 : -1), Color.red);
         Debug.DrawLine(transform.position, transform.position + Vector3.right * attackRange * (facingRight ? 1 : -1), Color.yellow);
-
-        // วาดวงกลมสำหรับ Ground Check
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.green);
     }
 
-    public void TakeDamage(float damage) // ดึงไปถ้าอยากฆ่าศัตรู
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         Debug.Log("Enemy Health: " + currentHealth);
 
+        // กระเด็นถอยหลังเมื่อโดนโจมตี
+        StartCoroutine(ApplyKnockbackAndStun());
+
+        // ตรวจสอบถ้าศัตรูตาย
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    private IEnumerator ApplyKnockbackAndStun()
+    {
+        isStunned = true;
+
+        // คำนวณทิศทาง Knockback (ถอยหลังจากตำแหน่ง Player)
+        Vector2 knockbackDirection = (transform.position.x > player.position.x ? Vector2.right : Vector2.left);
+        knockbackDirection.Normalize();
+
+        // ใช้ Knockback
+        rb.velocity = Vector2.zero; // รีเซ็ตความเร็วปัจจุบัน
+        rb.AddForce((knockbackDirection + Vector2.up) * knockbackForce, ForceMode2D.Impulse);
+
+        // รอระยะเวลาที่กำหนด (stunDuration)
+        yield return new WaitForSeconds(stunDuration);
+
+        isStunned = false;
     }
 
     private void Die()
