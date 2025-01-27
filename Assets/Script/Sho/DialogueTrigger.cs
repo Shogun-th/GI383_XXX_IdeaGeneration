@@ -32,10 +32,19 @@ public class DialogueTrigger : MonoBehaviour
     public Dialogue dialogue;
 
     private bool playerInRange = false; // ตรวจสอบว่าผู้เล่นอยู่ในระยะหรือไม่
+    [Header("Scene Transition")]
+    public string sceneToLoad; // ชื่อฉากที่ต้องการโหลด
+    private bool isSubscribedToEvent = false; // ตัวแปรตรวจสอบว่ามีการสมัคร Event หรือยัง
 
     public void TriggerDialogue()
     {
         DialogueManager.Instance.StartDialogue(dialogue);
+        // ตรวจสอบว่ามีชื่อฉากระบุไว้หรือไม่
+        if (!string.IsNullOrEmpty(sceneToLoad) && !isSubscribedToEvent)
+        {
+            DialogueManager.Instance.onDialogueEnd += LoadScene; // สมัครฟังก์ชัน LoadScene เมื่อสนทนาจบ
+            isSubscribedToEvent = true; // ตั้งค่าว่ามีการสมัคร Event แล้ว
+        }
     }
 
     private void Update()
@@ -44,6 +53,7 @@ public class DialogueTrigger : MonoBehaviour
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             TriggerDialogue();
+
         }
     }
 
@@ -61,6 +71,22 @@ public class DialogueTrigger : MonoBehaviour
         {
             playerInRange = false; // ตั้งค่าว่าผู้เล่นออกจากระยะ
         }
+    }
+    private void LoadScene()
+    {
+        // ตรวจสอบว่าฉากที่ระบุมีชื่อถูกต้อง
+        if (!string.IsNullOrEmpty(sceneToLoad))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
+        }
+        else
+        {
+            Debug.LogWarning("Scene name is not set in the Inspector!");
+        }
+
+        // ยกเลิกการสมัคร Event หลังจากเปลี่ยนฉาก
+        DialogueManager.Instance.onDialogueEnd -= LoadScene;
+        isSubscribedToEvent = false; // รีเซ็ตตัวแปรตรวจสอบ Event
     }
 }
 

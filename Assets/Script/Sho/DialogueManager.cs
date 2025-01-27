@@ -21,6 +21,9 @@ public class DialogueManager : MonoBehaviour
     public Animator animator;
 
     private Coroutine typingCoroutine;
+    // Event แจ้งเมื่อบทสนทนาสิ้นสุด
+    public event System.Action onDialogueEnd;
+
 
     private void Awake()
     {
@@ -84,5 +87,8 @@ public class DialogueManager : MonoBehaviour
         // ซ่อน UI และคืนค่าเวลาในเกม
         animator.Play("hide");
         Time.timeScale = 1f; // คืนค่าเวลาในเกม
+
+        // เรียก Event แจ้งว่าบทสนทนาสิ้นสุด
+        onDialogueEnd?.Invoke();
     }
 }
