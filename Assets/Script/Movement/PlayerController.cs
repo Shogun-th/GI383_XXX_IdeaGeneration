@@ -67,9 +67,8 @@ public class PlayerController : MonoBehaviour
         // การกระโดด
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            //animator.SetBool("IsJumping", true); // เปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            animator.SetBool("IsJumping", true); // เปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         }
 
         if (isGrounded && Mathf.Approximately(rb.velocity.y, 0f))
@@ -95,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
     private void PerformDash(Vector3 targetPosition)
     {
-        //animator.SetBool("IsDashing", true); // เปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetBool("IsDashing", true); // เปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         StartCoroutine(DashCoroutine(targetPosition));
     }
 
@@ -131,7 +130,7 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = Vector2.zero;
 
-        //animator.SetBool("IsDashing", false); // ปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetBool("IsDashing", false); // ปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         isDashing = false;
 
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), false);
