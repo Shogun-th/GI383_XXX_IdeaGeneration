@@ -61,6 +61,23 @@ public class PlayerController : MonoBehaviour
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
+        // อัปเดตตำแหน่งเมาส์ในโลก 2D
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // เปรียบเทียบทิศทางการเคลื่อนไหวกับตำแหน่งเมาส์
+        bool isMovingRight = moveInput > 0;
+        bool isMouseOnRight = mousePosition.x > transform.position.x;
+
+        // ถ้าเดินไปทางตรงข้ามกับเมาส์ ให้เล่น Animation เดินถอยหลัง
+        if ((isMovingRight && !isMouseOnRight) || (!isMovingRight && isMouseOnRight && moveInput != 0))
+        {
+            animator.SetBool("IsWalkingBackward", true); // เปิด Animation เดินถอยหลัง
+        }
+        else
+        {
+            animator.SetBool("IsWalkingBackward", false); // ปิด Animation เดินถอยหลัง
+        }
+        
         // อัปเดตสถานะ Walking ใน Animator
         animator.SetBool("IsWalking", moveInput != 0 && isGrounded); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
