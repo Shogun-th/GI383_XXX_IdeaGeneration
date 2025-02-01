@@ -81,11 +81,29 @@ public class PlayerController : MonoBehaviour
         // อัปเดตสถานะ Walking ใน Animator
         animator.SetBool("IsWalking", moveInput != 0 && isGrounded); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+        // ตรวจสอบสถานะการตก
+        if (isGrounded)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);  // ปิดสถานะตกเมื่ออยู่บนพื้น
+        }
+        else
+        {
+            if (rb.velocity.y < 0)
+            {
+                animator.SetBool("IsFalling", true);  // เปิดสถานะตก
+            }
+            else
+            {
+                animator.SetBool("IsFalling", false);  // ปิดสถานะตกถ้ายังมีแรงส่งขึ้น
+            }
+        }
+
         // การกระโดด
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            animator.SetBool("IsJumping", true); // เปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            animator.SetBool("IsJumping", true);  // เปิดสถานะ Jumping
         }
 
         if (isGrounded && Mathf.Approximately(rb.velocity.y, 0f))

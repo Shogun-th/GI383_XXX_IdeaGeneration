@@ -12,13 +12,15 @@ public class PlayerCombatMelee : MonoBehaviour
     private int attackIndex = 0; // ติดตามการโจมตีลำดับปัจจุบัน
     private bool isAttacking = false;
     
-    private float attackResetTimer = 0.5f;
+    private float attackResetTimer = 1f;
     private float timeSinceLastAttack = 0f;
+    private bool isComboActive = false;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isAttacking)  // เริ่มโจมตี
         {
+            //Debug.Log("Start Attack: AttackIndex = " + attackIndex);
             timeSinceLastAttack = 0f;
             StartCoroutine(PerformAttack());
         }
@@ -27,11 +29,13 @@ public class PlayerCombatMelee : MonoBehaviour
         {
             timeSinceLastAttack += Time.deltaTime;
 
-            if (timeSinceLastAttack >= attackResetTimer)  // ถ้าไม่มีการโจมตีเกิน 0.5 วินาที
+            if (timeSinceLastAttack >= attackResetTimer && !isAttacking)
             {
+                //Debug.Log("Resetting AttackIndex to -1");
                 animator.SetInteger("AttackIndex", -1);
                 animator.SetBool("IsAttacking", false);
-                attackIndex = 0;  // รีเซ็ตลำดับโจมตี
+                attackIndex = 0;
+                isComboActive = false;
             }
         }
     }
@@ -39,6 +43,7 @@ public class PlayerCombatMelee : MonoBehaviour
     private IEnumerator PerformAttack()
     {
         isAttacking = true;
+        isComboActive = true;
 
         /*// เล่นแอนิเมชันที่เกี่ยวข้อง
         string attackAnimation = "Attack" + (attackIndex + 1); // เช่น "Attack1", "Attack2"
@@ -66,7 +71,6 @@ public class PlayerCombatMelee : MonoBehaviour
         // ปิดสถานะการโจมตีใน Animator
         //animator.SetInteger("AttackIndex", -1);
         animator.SetBool("IsAttacking", false);
-
         isAttacking = false;
     }
 
