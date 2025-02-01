@@ -404,6 +404,7 @@ MonoBehaviour:
   - 25
   - 25
   - 25
+  animator: {fileID: 5832043775014815960}
   attackPoint: {fileID: 6948271579177613033}
   attackRange: 0.5
   enemyLayer:

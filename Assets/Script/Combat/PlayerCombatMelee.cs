@@ -4,20 +4,35 @@ using UnityEngine;
 public class PlayerCombatMelee : MonoBehaviour
 {
     public float[] attackDamages = { 10f, 20f, 30f, 40f }; // ดาเมจสำหรับแต่ละรูปแบบการโจมตี
-    //public Animator animator; // ใส่ Animator Component ที่ผูกกับตัวละคร
+    public Animator animator; // ใส่ Animator Component ที่ผูกกับตัวละคร
     public Transform attackPoint; // ตำแหน่งโจมตี
     public float attackRange = 0.5f; // ระยะโจมตี
     public LayerMask enemyLayer; // กำหนด Layer ของ Enemy
 
     private int attackIndex = 0; // ติดตามการโจมตีลำดับปัจจุบัน
     private bool isAttacking = false;
+    
+    private float attackResetTimer = 0.5f;
+    private float timeSinceLastAttack = 0f;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isAttacking) // คลิกซ้ายเพื่อโจมตี
+        if (Input.GetMouseButtonDown(0) && !isAttacking)  // เริ่มโจมตี
         {
-            Debug.Log("Attck!!");
+            timeSinceLastAttack = 0f;
             StartCoroutine(PerformAttack());
+        }
+
+        if (!Input.GetMouseButton(0))
+        {
+            timeSinceLastAttack += Time.deltaTime;
+
+            if (timeSinceLastAttack >= attackResetTimer)  // ถ้าไม่มีการโจมตีเกิน 0.5 วินาที
+            {
+                animator.SetInteger("AttackIndex", -1);
+                animator.SetBool("IsAttacking", false);
+                attackIndex = 0;  // รีเซ็ตลำดับโจมตี
+            }
         }
     }
 
@@ -25,10 +40,14 @@ public class PlayerCombatMelee : MonoBehaviour
     {
         isAttacking = true;
 
-        // เล่นแอนิเมชันที่เกี่ยวข้อง
+        /*// เล่นแอนิเมชันที่เกี่ยวข้อง
         string attackAnimation = "Attack" + (attackIndex + 1); // เช่น "Attack1", "Attack2"
-        //animator.Play(attackAnimation); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetInteger("AttackIndex", attackIndex);*/
 
+        // ตั้งค่า AttackIndex ใน Animator ให้ตรงกับลำดับปัจจุบัน
+        animator.SetInteger("AttackIndex", attackIndex);
+        animator.SetBool("IsAttacking", true); // ตั้งค่าเป็น true เมื่อเริ่มโจมตี
+        
         yield return new WaitForSeconds(0.1f); // รอช่วงเวลาที่แอนิเมชันถึงเฟรมโจมตี
 
         // ตรวจจับศัตรูในระยะโจมตี
@@ -39,10 +58,14 @@ public class PlayerCombatMelee : MonoBehaviour
             enemy.GetComponent<EnemyAi>().TakeDamage(attackDamages[attackIndex]);
         }
 
-        yield return new WaitForSeconds(0.5f); // รอจนกว่าแอนิเมชันจะจบ
+        yield return new WaitForSeconds(0.5f); // รอจนแอนิเมชันจบ
 
-        // เปลี่ยนรูปแบบการโจมตี (วนกลับมาเริ่มที่ 0 เมื่อจบรูปแบบทั้งหมด)
+        // เปลี่ยนรูปแบบการโจมตีไปยังลำดับถัดไป
         attackIndex = (attackIndex + 1) % attackDamages.Length;
+
+        // ปิดสถานะการโจมตีใน Animator
+        //animator.SetInteger("AttackIndex", -1);
+        animator.SetBool("IsAttacking", false);
 
         isAttacking = false;
     }
