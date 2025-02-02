@@ -21,20 +21,21 @@ public class EnemyAi : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckDistance = 0.5f;
 
-    public Rigidbody2D rb; // Rigidbody2D ของศัตรู
-    public float knockbackForce = 5f; // แรงกระเด็นถอยหลังเมื่อโดนโจมตี
-    public float stunDuration = 1f; // ระยะเวลาที่ศัตรูถูกทำให้หยุดชะงัก
+    public Rigidbody2D rb;
+    public float knockbackForce = 5f;
+    public float stunDuration = 1f;
+    private Animator animator;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
-        if (isStunned)
-            return; // ถ้าศัตรูถูกทำให้หยุดชะงัก จะไม่สามารถทำงานอื่นได้
+        if (isStunned) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -44,16 +45,29 @@ public class EnemyAi : MonoBehaviour
 
             if (distanceToPlayer <= attackRange && IsPlayerInFront())
             {
+                animator.SetBool("IsWalking", false);
+                animator.SetBool("Attack", true);  // เปิดแอนิเมชันโจมตี
                 AttackPlayer();
             }
             else
             {
+                // ตรวจสอบว่าแอนิเมชันโจมตียังเล่นอยู่หรือไม่
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.IsInTransition(0))
+                {
+                    Debug.Log("Still attacking...");
+                    return;
+                }
+
+                Debug.Log("Stopping Attack...");
+                animator.SetBool("Attack", false);  // ปิดแอนิเมชันโจมตีเมื่อออกนอกระยะ
+                animator.SetBool("IsWalking", true);
                 ChasePlayer();
             }
         }
         else
         {
             isPatrolling = true;
+            animator.SetBool("IsWalking", true);
             Patrol();
         }
 
@@ -89,6 +103,9 @@ public class EnemyAi : MonoBehaviour
             Debug.Log("Enemy attacks the player!");
             PlayerStats.Instance.TakeDamage(damageAmount);
             attackTimer = 0f;
+
+            // ปิดแอนิเมชันโจมตี
+            animator.SetBool("Attack", false);
         }
     }
 
@@ -128,10 +145,10 @@ public class EnemyAi : MonoBehaviour
         currentHealth -= damage;
         Debug.Log("Enemy Health: " + currentHealth);
 
-        // กระเด็นถอยหลังเมื่อโดนโจมตี
+        animator.SetTrigger("Hurt");
+
         StartCoroutine(ApplyKnockbackAndStun());
 
-        // ตรวจสอบถ้าศัตรูตาย
         if (currentHealth <= 0)
         {
             Die();
@@ -142,15 +159,12 @@ public class EnemyAi : MonoBehaviour
     {
         isStunned = true;
 
-        // คำนวณทิศทาง Knockback (ถอยหลังจากตำแหน่ง Player)
         Vector2 knockbackDirection = (transform.position.x > player.position.x ? Vector2.right : Vector2.left);
         knockbackDirection.Normalize();
 
-        // ใช้ Knockback
-        rb.velocity = Vector2.zero; // รีเซ็ตความเร็วปัจจุบัน
+        rb.velocity = Vector2.zero;
         rb.AddForce((knockbackDirection + Vector2.up) * knockbackForce, ForceMode2D.Impulse);
 
-        // รอระยะเวลาที่กำหนด (stunDuration)
         yield return new WaitForSeconds(stunDuration);
 
         isStunned = false;
@@ -158,7 +172,21 @@ public class EnemyAi : MonoBehaviour
 
     private void Die()
     {
+        animator.SetTrigger("Die");
         Debug.Log("Enemy died!");
-        Destroy(gameObject);
+
+        // ดึงข้อมูลความยาวแอนิเมชัน Die
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationLength = stateInfo.length;
+
+        StartCoroutine(DieAfterAnimation(animationLength));
+    }
+
+    private IEnumerator DieAfterAnimation(float animationLength)
+    {
+        // รอเวลาให้แอนิเมชัน Die เล่นจบ
+        yield return new WaitForSeconds(animationLength);
+
+        Destroy(gameObject);  // ทำลายวัตถุหลังแอนิเมชันจบ
     }
 }
