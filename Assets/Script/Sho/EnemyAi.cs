@@ -17,6 +17,9 @@ public class EnemyAi : MonoBehaviour
     private bool isPatrolling = true;
     private bool facingRight = true;
     private bool isStunned = false;
+    private bool isDead = false;  // เพิ่มตัวแปรเพื่อตรวจสอบสถานะการตาย
+    private bool isAttacking = false;
+
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.5f;
@@ -35,6 +38,8 @@ public class EnemyAi : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;  // หยุดการทำงานใน Update ถ้าศัตรูตายแล้ว
+
         if (isStunned) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -45,21 +50,18 @@ public class EnemyAi : MonoBehaviour
 
             if (distanceToPlayer <= attackRange && IsPlayerInFront())
             {
-                animator.SetBool("IsWalking", false);
-                animator.SetBool("Attack", true);  // เปิดแอนิเมชันโจมตี
+                if (!isAttacking)
+                {
+                    animator.SetBool("IsWalking", false);
+                    animator.SetBool("Attack", true);
+                    isAttacking = true;
+                }
                 AttackPlayer();
             }
             else
             {
-                // ตรวจสอบว่าแอนิเมชันโจมตียังเล่นอยู่หรือไม่
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.IsInTransition(0))
-                {
-                    Debug.Log("Still attacking...");
-                    return;
-                }
-
-                Debug.Log("Stopping Attack...");
-                animator.SetBool("Attack", false);  // ปิดแอนิเมชันโจมตีเมื่อออกนอกระยะ
+                isAttacking = false;
+                animator.SetBool("Attack", false);
                 animator.SetBool("IsWalking", true);
                 ChasePlayer();
             }
@@ -94,9 +96,13 @@ public class EnemyAi : MonoBehaviour
             Flip();
         }
     }
-
+    
     private void AttackPlayer()
     {
+        // ตรวจสอบว่าแอนิเมชันโจมตีจบหรือไม่ก่อนโจมตีครั้งใหม่
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Attack") && !animator.IsInTransition(0)) return;
+
         attackTimer += Time.deltaTime;
         if (attackTimer >= attackCooldown)
         {
@@ -104,9 +110,67 @@ public class EnemyAi : MonoBehaviour
             PlayerStats.Instance.TakeDamage(damageAmount);
             attackTimer = 0f;
 
-            // ปิดแอนิเมชันโจมตี
-            animator.SetBool("Attack", false);
+            animator.SetBool("Attack", false);  // ปิดแอนิเมชัน Attack หลังโจมตี
         }
+    }
+
+
+    public void TakeDamage(float damage)
+    {
+        if (isDead) return;  // ถ้าศัตรูตายแล้ว หยุดการทำงานของ TakeDamage
+
+        currentHealth -= damage;
+        Debug.Log("Enemy Health: " + currentHealth);
+
+        animator.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(ApplyKnockbackAndStun());
+        }
+    }
+
+    private IEnumerator ApplyKnockbackAndStun()
+    {
+        isStunned = true;
+
+        Vector2 knockbackDirection = (transform.position.x > player.position.x ? Vector2.right : Vector2.left);
+        knockbackDirection.Normalize();
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce((knockbackDirection + Vector2.up) * knockbackForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(stunDuration);
+
+        isStunned = false;
+    }
+
+    private void Die()
+    {
+        if (isDead) return;  // ป้องกันการเรียก Die ซ้ำ
+
+        isDead = true;
+
+        // ปิดแอนิเมชันอื่น ๆ ก่อนเล่นแอนิเมชัน Die
+        animator.SetBool("Attack", false);
+        animator.ResetTrigger("Hurt");
+
+        animator.SetTrigger("Die");  // เรียกแอนิเมชัน Die
+        Debug.Log("Enemy died!");
+
+        StartCoroutine(WaitAndDestroy());
+    }
+
+    private IEnumerator WaitAndDestroy()
+    {
+        // รอให้แอนิเมชัน Die เล่นจบ
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        Destroy(gameObject);  // ทำลายวัตถุ
     }
 
     private bool IsGrounded()
@@ -138,55 +202,5 @@ public class EnemyAi : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + Vector3.right * detectionRange * (facingRight ? 1 : -1), Color.red);
         Debug.DrawLine(transform.position, transform.position + Vector3.right * attackRange * (facingRight ? 1 : -1), Color.yellow);
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.green);
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        Debug.Log("Enemy Health: " + currentHealth);
-
-        animator.SetTrigger("Hurt");
-
-        StartCoroutine(ApplyKnockbackAndStun());
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    private IEnumerator ApplyKnockbackAndStun()
-    {
-        isStunned = true;
-
-        Vector2 knockbackDirection = (transform.position.x > player.position.x ? Vector2.right : Vector2.left);
-        knockbackDirection.Normalize();
-
-        rb.velocity = Vector2.zero;
-        rb.AddForce((knockbackDirection + Vector2.up) * knockbackForce, ForceMode2D.Impulse);
-
-        yield return new WaitForSeconds(stunDuration);
-
-        isStunned = false;
-    }
-
-    private void Die()
-    {
-        animator.SetTrigger("Die");
-        Debug.Log("Enemy died!");
-
-        // ดึงข้อมูลความยาวแอนิเมชัน Die
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        float animationLength = stateInfo.length;
-
-        StartCoroutine(DieAfterAnimation(animationLength));
-    }
-
-    private IEnumerator DieAfterAnimation(float animationLength)
-    {
-        // รอเวลาให้แอนิเมชัน Die เล่นจบ
-        yield return new WaitForSeconds(animationLength);
-
-        Destroy(gameObject);  // ทำลายวัตถุหลังแอนิเมชันจบ
     }
 }
