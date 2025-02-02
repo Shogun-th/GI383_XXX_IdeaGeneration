@@ -18,9 +18,14 @@ public class PlayerCombatMelee : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isAttacking)  // เริ่มโจมตี
+        if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
-            //Debug.Log("Start Attack: AttackIndex = " + attackIndex);
+            // ตั้งค่าให้เริ่มโจมตีจากลำดับที่ 1
+            if (attackIndex == 0)
+            {
+                attackIndex = 1;  // เริ่มการโจมตีที่ลำดับ 1
+            }
+
             timeSinceLastAttack = 0f;
             StartCoroutine(PerformAttack());
         }
@@ -31,10 +36,10 @@ public class PlayerCombatMelee : MonoBehaviour
 
             if (timeSinceLastAttack >= attackResetTimer && !isAttacking)
             {
-                //Debug.Log("Resetting AttackIndex to -1");
-                animator.SetInteger("AttackIndex", -1);
+                // รีเซ็ตค่าเมื่อไม่มีการโจมตีต่อเนื่อง
+                animator.SetInteger("AttackIndex", 0);
                 animator.SetBool("IsAttacking", false);
-                attackIndex = 0;
+                attackIndex = 0;  // กลับไปสถานะ Idle
                 isComboActive = false;
             }
         }
@@ -45,35 +50,30 @@ public class PlayerCombatMelee : MonoBehaviour
         isAttacking = true;
         isComboActive = true;
 
-        /*// เล่นแอนิเมชันที่เกี่ยวข้อง
-        string attackAnimation = "Attack" + (attackIndex + 1); // เช่น "Attack1", "Attack2"
-        animator.SetInteger("AttackIndex", attackIndex);*/
-
         // ตั้งค่า AttackIndex ใน Animator ให้ตรงกับลำดับปัจจุบัน
         animator.SetInteger("AttackIndex", attackIndex);
-        animator.SetBool("IsAttacking", true); // ตั้งค่าเป็น true เมื่อเริ่มโจมตี
-        
-        yield return new WaitForSeconds(0.1f); // รอช่วงเวลาที่แอนิเมชันถึงเฟรมโจมตี
+        animator.SetBool("IsAttacking", true);
+
+        yield return new WaitForSeconds(0.1f);  // รอให้แอนิเมชันเข้าสู่เฟรมโจมตี
 
         // ตรวจจับศัตรูในระยะโจมตี
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Hit " + enemy.name);
-            enemy.GetComponent<EnemyAi>().TakeDamage(attackDamages[attackIndex]);
+            enemy.GetComponent<EnemyAi>().TakeDamage(attackDamages[attackIndex - 1]);  // ใช้ลำดับโจมตีที่ตรงกับดาเมจ
         }
 
-        yield return new WaitForSeconds(0.5f); // รอจนแอนิเมชันจบ
+        yield return new WaitForSeconds(0.5f);  // รอจนแอนิเมชันจบ
 
-        // เปลี่ยนรูปแบบการโจมตีไปยังลำดับถัดไป
-        attackIndex = (attackIndex + 1) % attackDamages.Length;
+        // วนลำดับการโจมตีต่อไป
+        attackIndex = (attackIndex % attackDamages.Length) + 1;
 
         // ปิดสถานะการโจมตีใน Animator
-        //animator.SetInteger("AttackIndex", -1);
         animator.SetBool("IsAttacking", false);
         isAttacking = false;
     }
-
+    
     private void OnDrawGizmosSelected()
     {
         // วาดวงแสดงระยะโจมตีใน Scene View
