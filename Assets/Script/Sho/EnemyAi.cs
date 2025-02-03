@@ -99,19 +99,37 @@ public class EnemyAi : MonoBehaviour
     
     private void AttackPlayer()
     {
-        // ตรวจสอบว่าแอนิเมชันโจมตีจบหรือไม่ก่อนโจมตีครั้งใหม่
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Attack") && !animator.IsInTransition(0)) return;
-
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= attackCooldown)
+        if (attackTimer > 0)
         {
-            Debug.Log("Enemy attacks the player!");
-            PlayerStats.Instance.TakeDamage(damageAmount);
-            attackTimer = 0f;
-
-            animator.SetBool("Attack", false);  // ปิดแอนิเมชัน Attack หลังโจมตี
+            attackTimer -= Time.deltaTime;
+            return;
         }
+
+        // ตรวจสอบว่าผู้เล่นอยู่ในระยะและอยู่ด้านหน้า
+        if (Vector3.Distance(transform.position, player.position) <= attackRange && IsPlayerInFront())
+        {
+            Debug.Log("Enemy Attacking!");
+
+            // เล่น Animation โจมตี
+            animator.SetBool("Attack", true);
+
+            // ตรวจสอบว่าผู้เล่นยังไม่ตายก่อนลด HP
+            if (PlayerStats.Instance != null)
+            {
+                Debug.Log("Player took damage!");
+                PlayerStats.Instance.TakeDamage(damageAmount);
+            }
+            else
+            {
+                Debug.LogWarning("PlayerStats Instance is null!");
+            }
+        }
+
+        // ตั้งค่า cooldown
+        attackTimer = attackCooldown;
+
+        // ปิด Animation หลังจากโจมตีเสร็จ
+        Invoke("ResetAttackAnimation", 0.5f);
     }
 
 
@@ -190,7 +208,10 @@ public class EnemyAi : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
-
+    private void ResetAttackAnimation()
+    {
+        animator.SetBool("Attack", false);
+    }
     private bool IsPlayerInFront()
     {
         Vector3 directionToPlayer = player.position - transform.position;

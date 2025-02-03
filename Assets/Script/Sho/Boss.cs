@@ -102,19 +102,37 @@ public class Boss : MonoBehaviour
 
     private void AttackPlayer()
     {
-        // ตรวจสอบว่าแอนิเมชันโจมตีจบหรือไม่ก่อนโจมตีครั้งใหม่
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Attack") && !animator.IsInTransition(0)) return;
-
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= attackCooldown)
+        if (attackTimer > 0)
         {
-            Debug.Log("Enemy attacks the player!");
-            PlayerStats.Instance.TakeDamage(damageAmount);
-            attackTimer = 0f;
-
-            animator.SetBool("Attack", false);  // ปิดแอนิเมชัน Attack หลังโจมตี
+            attackTimer -= Time.deltaTime;
+            return;
         }
+
+        // ตรวจสอบว่าผู้เล่นอยู่ในระยะและอยู่ด้านหน้า
+        if (Vector3.Distance(transform.position, player.position) <= attackRange && IsPlayerInFront())
+        {
+            Debug.Log("Enemy Attacking!");
+
+            // เล่น Animation โจมตี
+            animator.SetBool("Attack", true);
+
+            // ตรวจสอบว่าผู้เล่นยังไม่ตายก่อนลด HP
+            if (PlayerStats.Instance != null)
+            {
+                Debug.Log("Player took damage!");
+                PlayerStats.Instance.TakeDamage(damageAmount);
+            }
+            else
+            {
+                Debug.LogWarning("PlayerStats Instance is null!");
+            }
+        }
+
+        // ตั้งค่า cooldown
+        attackTimer = attackCooldown;
+
+        // ปิด Animation หลังจากโจมตีเสร็จ
+        Invoke("ResetAttackAnimation", 0.5f);
     }
 
 
@@ -200,6 +218,10 @@ public class Boss : MonoBehaviour
         return (facingRight && directionToPlayer.x > 0) || (!facingRight && directionToPlayer.x < 0);
     }
 
+    private void ResetAttackAnimation()
+    {
+        animator.SetBool("Attack", false);
+    }
     private void DrawDetectionVisuals()
     {
         Debug.DrawLine(transform.position, transform.position + Vector3.right * detectionRange * (facingRight ? 1 : -1), Color.red);
