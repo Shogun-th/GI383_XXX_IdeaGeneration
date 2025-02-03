@@ -62,6 +62,7 @@ public class PlayerCombatMelee : MonoBehaviour
         {
             Debug.Log("Hit " + enemy.name);
             enemy.GetComponent<EnemyAi>().TakeDamage(attackDamages[attackIndex - 1]);  // ใช้ลำดับโจมตีที่ตรงกับดาเมจ
+            
         }
 
         yield return new WaitForSeconds(0.5f);  // รอจนแอนิเมชันจบ

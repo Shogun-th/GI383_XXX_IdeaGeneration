@@ -2,14 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CharState
-{
-    Idle,
-    Walk,
-    Attack,
-    Hit,
-    Die
-}
+
 
 public class Boss : MonoBehaviour
 {
@@ -24,14 +17,20 @@ public class Boss : MonoBehaviour
     private Transform player;
     private float attackTimer = 0f;
     private float currentHealth;
-    private bool isStunned = false;
+    private bool isPatrolling = true;
     private bool facingRight = true;
+    private bool isStunned = false;
+    private bool isDead = false;  // เพิ่มตัวแปรเพื่อตรวจสอบสถานะการตาย
+    private bool isAttacking = false;
+
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.5f;
+
     public Rigidbody2D rb;
-    public Animator animator;
-    private CharState currentState = CharState.Idle;
+    public float knockbackForce = 5f;
+    public float stunDuration = 1f;
+    private Animator animator;
 
     private void Start()
     {
@@ -40,25 +39,40 @@ public class Boss : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
+        if (isDead) return;  // หยุดการทำงานใน Update ถ้าศัตรูตายแล้ว
+
         if (isStunned) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= detectionRange)
         {
-            if (distanceToPlayer <= attackRange)
+            isPatrolling = false;
+
+            if (distanceToPlayer <= attackRange && IsPlayerInFront())
             {
+                if (!isAttacking)
+                {
+                    animator.SetBool("IsWalking", false);
+                    animator.SetBool("Attack", true);
+                    isAttacking = true;
+                }
                 AttackPlayer();
             }
             else
             {
+                isAttacking = false;
+                animator.SetBool("Attack", false);
+                animator.SetBool("IsWalking", true);
                 ChasePlayer();
             }
         }
         else
         {
+            isPatrolling = true;
+            animator.SetBool("IsWalking", true);
             Patrol();
         }
 
@@ -67,40 +81,99 @@ public class Boss : MonoBehaviour
 
     private void Patrol()
     {
-        if (!IsGrounded() || IsAtEdge())
+        if (IsAtEdge() || !IsGrounded())
         {
             Flip();
         }
 
-        rb.velocity = new Vector2(speed * (facingRight ? 1 : -1), rb.velocity.y);
-        ChangeState(CharState.Walk);
+        transform.Translate(Vector2.right * speed * Time.deltaTime * (facingRight ? 1 : -1));
     }
 
     private void ChasePlayer()
     {
-        float directionX = player.position.x - transform.position.x;
-        if (directionX > 0 && !facingRight) Flip();
-        if (directionX < 0 && facingRight) Flip();
+        Vector3 direction = (player.position - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
 
-        rb.velocity = new Vector2(speed * Mathf.Sign(directionX), rb.velocity.y);
-        ChangeState(CharState.Walk);
+        if ((direction.x > 0 && !facingRight) || (direction.x < 0 && facingRight))
+        {
+            Flip();
+        }
     }
 
     private void AttackPlayer()
     {
-        if (attackTimer <= 0)
+        // ตรวจสอบว่าแอนิเมชันโจมตีจบหรือไม่ก่อนโจมตีครั้งใหม่
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Attack") && !animator.IsInTransition(0)) return;
+
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackCooldown)
         {
-            ChangeState(CharState.Attack);
+            Debug.Log("Enemy attacks the player!");
             PlayerStats.Instance.TakeDamage(damageAmount);
-            attackTimer = attackCooldown;
-            Invoke("ResetAttack", 0.5f); // รีเซ็ต Animation หลังจาก 0.5 วินาที
+            attackTimer = 0f;
+
+            animator.SetBool("Attack", false);  // ปิดแอนิเมชัน Attack หลังโจมตี
         }
-        attackTimer -= Time.deltaTime;
     }
 
-    private void ResetAttack()
+
+    public void TakeDamage(float damage)
     {
-        ChangeState(CharState.Idle);
+        if (isDead) return;  // ถ้าศัตรูตายแล้ว หยุดการทำงานของ TakeDamage
+
+        currentHealth -= damage;
+        Debug.Log("Enemy Health: " + currentHealth);
+
+        animator.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(ApplyKnockbackAndStun());
+        }
+    }
+
+    private IEnumerator ApplyKnockbackAndStun()
+    {
+        isStunned = true;
+
+        Vector2 knockbackDirection = (transform.position.x > player.position.x ? Vector2.right : Vector2.left);
+        knockbackDirection.Normalize();
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce((knockbackDirection + Vector2.up) * knockbackForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(stunDuration);
+
+        isStunned = false;
+    }
+
+    private void Die()
+    {
+        if (isDead) return;  // ป้องกันการเรียก Die ซ้ำ
+
+        isDead = true;
+
+        // ปิดแอนิเมชันอื่น ๆ ก่อนเล่นแอนิเมชัน Die
+        animator.SetBool("Attack", false);
+        animator.ResetTrigger("Hurt");
+
+        animator.SetTrigger("Die");  // เรียกแอนิเมชัน Die
+        Debug.Log("Enemy died!");
+
+        StartCoroutine(WaitAndDestroy());
+    }
+
+    private IEnumerator WaitAndDestroy()
+    {
+        // รอให้แอนิเมชัน Die เล่นจบ
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        Destroy(gameObject);  // ทำลายวัตถุ
     }
 
     private bool IsGrounded()
@@ -110,49 +183,27 @@ public class Boss : MonoBehaviour
 
     private bool IsAtEdge()
     {
-        return !Physics2D.Raycast(groundCheck.position + new Vector3(facingRight ? 0.5f : -0.5f, 0, 0), Vector2.down, groundCheckDistance, groundLayer);
+        return !Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
     }
 
     private void Flip()
     {
         facingRight = !facingRight;
-        transform.Rotate(0f, 180f, 0f);
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+
+    private bool IsPlayerInFront()
+    {
+        Vector3 directionToPlayer = player.position - transform.position;
+        return (facingRight && directionToPlayer.x > 0) || (!facingRight && directionToPlayer.x < 0);
     }
 
     private void DrawDetectionVisuals()
     {
+        Debug.DrawLine(transform.position, transform.position + Vector3.right * detectionRange * (facingRight ? 1 : -1), Color.red);
+        Debug.DrawLine(transform.position, transform.position + Vector3.right * attackRange * (facingRight ? 1 : -1), Color.yellow);
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.green);
-    }
-
-    private void ChangeState(CharState newState)
-    {
-        if (currentState == newState) return;
-
-        // Reset Animator ทุกครั้งที่เปลี่ยน State
-        animator.SetBool("isWalking", false);
-        animator.SetBool("isAttacking", false);
-        animator.SetBool("isDead", false);
-
-        currentState = newState;
-        switch (currentState)
-        {
-            case CharState.Idle:
-                rb.velocity = Vector2.zero;
-                break;
-            case CharState.Walk:
-                animator.SetBool("isWalking", true);
-                break;
-            case CharState.Attack:
-                animator.SetBool("isAttacking", true);
-                rb.velocity = Vector2.zero; // หยุดเคลื่อนที่ตอนโจมตี
-                break;
-            case CharState.Hit:
-                animator.SetTrigger("isHit");
-                break;
-            case CharState.Die:
-                animator.SetBool("isDead", true);
-                rb.velocity = Vector2.zero;
-                break;
-        }
     }
 }

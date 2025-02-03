@@ -110,316 +110,358 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss-Sheet_Attack_0
+      name: Boss-Sheet_attack_0
       rect:
         serializedVersion: 2
-        x: 107
+        x: 100
         y: 0
         width: 82
-        height: 71
+        height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9edb5d5428c452f48a276ebd903567b2
-      internalID: -1923483538
+      spriteID: 4a21e4d393aaedc4095bfca0fdbd544e
+      internalID: -1611468646
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss-Sheet_Attack_1
+      name: Boss-Sheet_attack_1
       rect:
         serializedVersion: 2
-        x: 398
+        x: 389
         y: 0
-        width: 77
-        height: 75
+        width: 78
+        height: 77
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d6f692c2a15ae294db65396d98c03380
-      internalID: -1653702197
+      spriteID: 0e57eb89d733a0940862a30bf6d75948
+      internalID: 1220795850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss-Sheet_Attack_2
+      name: Boss-Sheet_attack_2
       rect:
         serializedVersion: 2
-        x: 684
-        y: 0
-        width: 95
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f3a45ff33fb74724a8d66b9a3e9cdfd2
-      internalID: 751615649
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_3
-      rect:
-        serializedVersion: 2
-        x: 978
-        y: 0
-        width: 90
-        height: 73
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2a540bff375af394581aef7ec9c7b766
-      internalID: 2069170028
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_4
-      rect:
-        serializedVersion: 2
-        x: 1262
-        y: 0
-        width: 97
-        height: 75
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4e2134c32901846409931a9a631f39f2
-      internalID: 1691370608
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_5
-      rect:
-        serializedVersion: 2
-        x: 1554
-        y: 0
-        width: 94
-        height: 73
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 25b57015d1f91a944b73d8cfd13f1d41
-      internalID: 1075523438
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_6
-      rect:
-        serializedVersion: 2
-        x: 1840
+        x: 661
         y: 0
         width: 95
-        height: 96
+        height: 77
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c56dd0fc5e2bf2e4da828c9fcdcdbef2
-      internalID: -2091212188
+      spriteID: 4b33d8b331f3b4c469130844a8341f32
+      internalID: -808370637
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss-Sheet_Attack_7
+      name: Boss-Sheet_attack_3
       rect:
         serializedVersion: 2
-        x: 2129
-        y: 0
-        width: 93
-        height: 118
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f2a9469557acc6f4e83b406086f8f17c
-      internalID: -584357704
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_8
-      rect:
-        serializedVersion: 2
-        x: 2418
+        x: 948
         y: 0
         width: 91
-        height: 114
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 47a7ff53916b6e249bffe2a040bddc74
-      internalID: 1827455076
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_9
-      rect:
-        serializedVersion: 2
-        x: 2615
-        y: 0
-        width: 158
-        height: 76
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0143356e2c5c91b419b1b257018968cb
-      internalID: -550451793
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_10
-      rect:
-        serializedVersion: 2
-        x: 2900
-        y: 0
-        width: 163
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ede6ffd0bd6ed39499ae203354e925cb
-      internalID: 1059276325
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_12
-      rect:
-        serializedVersion: 2
-        x: 3207
-        y: 0
-        width: 144
-        height: 65
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 667425f65ade12349a147d42bfe62d6c
-      internalID: -160652779
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_13
-      rect:
-        serializedVersion: 2
-        x: 3545
-        y: 0
-        width: 93
-        height: 66
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b7f84341d2775e4abf370c8ac15fae4
-      internalID: -1844590203
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss-Sheet_Attack_14
-      rect:
-        serializedVersion: 2
-        x: 3844
-        y: 0
-        width: 83
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a63ff870c0176346b8a45592ebca389
-      internalID: -1771628821
+      spriteID: b4ec36ae391860148914bace5f4e30a2
+      internalID: 895958225
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss-Sheet_Attack_15
+      name: Boss-Sheet_attack_4
       rect:
         serializedVersion: 2
-        x: 4135
+        x: 1233
         y: 0
-        width: 85
-        height: 72
+        width: 97
+        height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a08315c3b0eab0b4da1c2e637f6c8a26
-      internalID: 324513807
+      spriteID: 39d3877cd28b59d46a565dc34bdcec5a
+      internalID: 1465095056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_5
+      rect:
+        serializedVersion: 2
+        x: 1520
+        y: 0
+        width: 95
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a41a87c4a7aff24589dfe61183f3ad9
+      internalID: 1018497333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_6
+      rect:
+        serializedVersion: 2
+        x: 1811
+        y: 0
+        width: 93
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce2f32a5121fb2646a24211168ff46eb
+      internalID: -127114859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_7
+      rect:
+        serializedVersion: 2
+        x: 2098
+        y: 0
+        width: 93
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1173aa999005304783befd7e4fa4d24
+      internalID: 1493637350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_8
+      rect:
+        serializedVersion: 2
+        x: 2387
+        y: 0
+        width: 90
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd18e7996fbb2fa41beefc60030fdbd3
+      internalID: -1353445852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_9
+      rect:
+        serializedVersion: 2
+        x: 2699
+        y: 0
+        width: 158
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bef76d43f8415a4c98a4a5124016c71
+      internalID: -2018652855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_10
+      rect:
+        serializedVersion: 2
+        x: 2986
+        y: 0
+        width: 162
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee92e7c85aa707b489bd05acb53f98d1
+      internalID: -454723048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_11
+      rect:
+        serializedVersion: 2
+        x: 3273
+        y: 0
+        width: 145
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f393e7bc7a4fe24b81ae9fcd112a3cd
+      internalID: 1604780332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_12
+      rect:
+        serializedVersion: 2
+        x: 3431
+        y: 10
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2aad65e538698b7489c5eca833511940
+      internalID: 1839922154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_13
+      rect:
+        serializedVersion: 2
+        x: 3562
+        y: 0
+        width: 95
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c70fbb2c3abb154fabbcffd17a63893
+      internalID: -979973759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_14
+      rect:
+        serializedVersion: 2
+        x: 3851
+        y: 0
+        width: 82
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c795118cb26e2f344b2d1a1aab5291af
+      internalID: -1066950919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_15
+      rect:
+        serializedVersion: 2
+        x: 4130
+        y: 0
+        width: 87
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be250a92f065e70448ae060cb0176245
+      internalID: -405721057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss-Sheet_attack_16
+      rect:
+        serializedVersion: 2
+        x: 3429
+        y: 1
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 432e78f7ac7cc384086c839f1e1d32a7
+      internalID: -1526045953
       vertices: []
       indices: 
       edges: []
@@ -435,23 +477,23 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boss-Sheet_Attack_0: -1923483538
-      Boss-Sheet_Attack_1: -1653702197
-      Boss-Sheet_Attack_10: 1059276325
-      Boss-Sheet_Attack_11: -1191755475
-      Boss-Sheet_Attack_12: -160652779
-      Boss-Sheet_Attack_13: -1844590203
-      Boss-Sheet_Attack_14: -1771628821
-      Boss-Sheet_Attack_15: 324513807
-      Boss-Sheet_Attack_16: -1787134695
-      Boss-Sheet_Attack_2: 751615649
-      Boss-Sheet_Attack_3: 2069170028
-      Boss-Sheet_Attack_4: 1691370608
-      Boss-Sheet_Attack_5: 1075523438
-      Boss-Sheet_Attack_6: -2091212188
-      Boss-Sheet_Attack_7: -584357704
-      Boss-Sheet_Attack_8: 1827455076
-      Boss-Sheet_Attack_9: -550451793
+      Boss-Sheet_attack_0: -1611468646
+      Boss-Sheet_attack_1: 1220795850
+      Boss-Sheet_attack_10: -454723048
+      Boss-Sheet_attack_11: 1604780332
+      Boss-Sheet_attack_12: 1839922154
+      Boss-Sheet_attack_13: -979973759
+      Boss-Sheet_attack_14: -1066950919
+      Boss-Sheet_attack_15: -405721057
+      Boss-Sheet_attack_16: -1526045953
+      Boss-Sheet_attack_2: -808370637
+      Boss-Sheet_attack_3: 895958225
+      Boss-Sheet_attack_4: 1465095056
+      Boss-Sheet_attack_5: 1018497333
+      Boss-Sheet_attack_6: -127114859
+      Boss-Sheet_attack_7: 1493637350
+      Boss-Sheet_attack_8: -1353445852
+      Boss-Sheet_attack_9: -2018652855
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
