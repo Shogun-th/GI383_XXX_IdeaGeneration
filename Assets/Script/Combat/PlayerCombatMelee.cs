@@ -60,10 +60,25 @@ public class PlayerCombatMelee : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log("Hit " + enemy.name);
-            enemy.GetComponent<EnemyAi>().TakeDamage(attackDamages[attackIndex - 1]);  // ใช้ลำดับโจมตีที่ตรงกับดาเมจ
-            
+            EnemyAi enemyAi = enemy.GetComponent<EnemyAi>();
+            Boss boss = enemy.GetComponent<Boss>(); // เช็คว่าเป็นบอสรึเปล่า
+
+            if (enemyAi != null) // ถ้าเป็นศัตรูทั่วไป
+            {
+                enemyAi.TakeDamage(attackDamages[attackIndex - 1]);
+                Debug.Log("Hit enemy: " + enemy.name);
+            }
+            else if (boss != null) // ถ้าเป็นบอส
+            {
+                boss.TakeDamage(attackDamages[attackIndex - 1]);
+                Debug.Log("Hit boss: " + enemy.name);
+            }
+            else
+            {
+                Debug.LogWarning("Hit an object without EnemyAi or Boss: " + enemy.name);
+            }
         }
+
 
         yield return new WaitForSeconds(0.5f);  // รอจนแอนิเมชันจบ
 
