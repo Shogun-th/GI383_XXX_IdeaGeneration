@@ -85,17 +85,18 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
-            animator.SetBool("IsFalling", false);  // ปิดสถานะตกเมื่ออยู่บนพื้น
+            animator.SetBool("IsFalling", false);
         }
         else
         {
-            if (rb.velocity.y < 0)
+            if (rb.velocity.y < -0.1f)
             {
-                animator.SetBool("IsFalling", true);  // เปิดสถานะตก
+                animator.SetBool("IsFalling", true);
             }
-            else
+            else if (rb.velocity.y > 0.1f)
             {
-                animator.SetBool("IsFalling", false);  // ปิดสถานะตกถ้ายังมีแรงส่งขึ้น
+                animator.SetBool("IsJumping", true);
+                animator.SetBool("IsFalling", false);
             }
         }
 
@@ -216,6 +217,6 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isGrounded = true;
-        animator.SetBool("IsJumping", !isGrounded);
+        //animator.SetBool("IsJumping", !isGrounded);
     }
 }
