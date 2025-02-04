@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -106,6 +106,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -113,12 +139,12 @@ TextureImporter:
       name: Boss-Shee_walkt_0
       rect:
         serializedVersion: 2
-        x: 116
+        x: 0
         y: 0
-        width: 64
-        height: 75
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +160,12 @@ TextureImporter:
       name: Boss-Shee_walkt_1
       rect:
         serializedVersion: 2
-        x: 400
+        x: 288
         y: 0
-        width: 65
-        height: 71
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,12 +181,12 @@ TextureImporter:
       name: Boss-Shee_walkt_2
       rect:
         serializedVersion: 2
-        x: 688
+        x: 576
         y: 0
-        width: 65
-        height: 71
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,12 +202,12 @@ TextureImporter:
       name: Boss-Shee_walkt_3
       rect:
         serializedVersion: 2
-        x: 971
+        x: 864
         y: 0
-        width: 67
-        height: 68
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,12 +223,12 @@ TextureImporter:
       name: Boss-Shee_walkt_4
       rect:
         serializedVersion: 2
-        x: 1255
+        x: 1152
         y: 0
-        width: 76
-        height: 69
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,12 +244,12 @@ TextureImporter:
       name: Boss-Shee_walkt_5
       rect:
         serializedVersion: 2
-        x: 1538
+        x: 1440
         y: 0
-        width: 83
-        height: 74
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -239,12 +265,12 @@ TextureImporter:
       name: Boss-Shee_walkt_6
       rect:
         serializedVersion: 2
-        x: 1823
+        x: 1728
         y: 0
-        width: 90
-        height: 70
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -260,12 +286,12 @@ TextureImporter:
       name: Boss-Shee_walkt_7
       rect:
         serializedVersion: 2
-        x: 2115
+        x: 2016
         y: 0
-        width: 83
-        height: 71
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -281,12 +307,12 @@ TextureImporter:
       name: Boss-Shee_walkt_8
       rect:
         serializedVersion: 2
-        x: 2404
+        x: 2304
         y: 0
-        width: 81
-        height: 69
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -302,12 +328,12 @@ TextureImporter:
       name: Boss-Shee_walkt_9
       rect:
         serializedVersion: 2
-        x: 2697
+        x: 2592
         y: 0
-        width: 78
-        height: 69
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -323,12 +349,12 @@ TextureImporter:
       name: Boss-Shee_walkt_10
       rect:
         serializedVersion: 2
-        x: 2987
+        x: 2880
         y: 0
-        width: 72
-        height: 71
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -344,12 +370,12 @@ TextureImporter:
       name: Boss-Shee_walkt_11
       rect:
         serializedVersion: 2
-        x: 3280
+        x: 3168
         y: 0
-        width: 65
-        height: 73
+        width: 288
+        height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
