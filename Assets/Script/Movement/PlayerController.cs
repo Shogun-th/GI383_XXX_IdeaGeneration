@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI dashCooldownText;
 
     private Rigidbody2D rb;
-    //private Animator animator; // ตัวแปร Animator <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    private Animator animator; // ตัวแปร Animator <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     private bool isGrounded;
     private bool isDashing;
     private float dashCooldownTime;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // animator = GetComponent<Animator>(); // ดึง Animator Component <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator = GetComponent<Animator>(); // ดึง Animator Component <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
     void Update()
@@ -61,19 +61,54 @@ public class PlayerController : MonoBehaviour
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
+        // อัปเดตตำแหน่งเมาส์ในโลก 2D
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // เปรียบเทียบทิศทางการเคลื่อนไหวกับตำแหน่งเมาส์
+        bool isMovingRight = moveInput > 0;
+        bool isMouseOnRight = mousePosition.x > transform.position.x;
+
+        // ถ้าเดินไปทางตรงข้ามกับเมาส์ ให้เล่น Animation เดินถอยหลัง
+        if ((isMovingRight && !isMouseOnRight) || (!isMovingRight && isMouseOnRight && moveInput != 0))
+        {
+            animator.SetBool("IsWalkingBackward", true); // เปิด Animation เดินถอยหลัง
+        }
+        else
+        {
+            animator.SetBool("IsWalkingBackward", false); // ปิด Animation เดินถอยหลัง
+        }
+        
         // อัปเดตสถานะ Walking ใน Animator
-        //animator.SetBool("IsWalking", moveInput != 0 && isGrounded); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetBool("IsWalking", moveInput != 0 && isGrounded); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // ตรวจสอบสถานะการตก
+        if (isGrounded)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);  // ปิดสถานะตกเมื่ออยู่บนพื้น
+        }
+        else
+        {
+            if (rb.velocity.y < 0)
+            {
+                animator.SetBool("IsFalling", true);  // เปิดสถานะตก
+            }
+            else
+            {
+                animator.SetBool("IsFalling", false);  // ปิดสถานะตกถ้ายังมีแรงส่งขึ้น
+            }
+        }
 
         // การกระโดด
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            //animator.SetBool("IsJumping", true); // เปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            animator.SetBool("IsJumping", true);  // เปิดสถานะ Jumping
         }
 
-        if (isGrounded)
+        if (isGrounded && Mathf.Approximately(rb.velocity.y, 0f))
         {
-            //animator.SetBool("IsJumping", false); // ปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            animator.SetBool("IsJumping", false); // ปิดสถานะ Jumping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         }
 
         // ระบบ Dash
@@ -86,9 +121,15 @@ public class PlayerController : MonoBehaviour
         FlipTowardsMouse();
     }
 
+    private void FixedUpdate() //jump and run
+    {
+        animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("yVelocity", rb.velocity.y);
+    }
+
     private void PerformDash(Vector3 targetPosition)
     {
-        //animator.SetBool("IsDashing", true); // เปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetBool("IsDashing", true); // เปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         StartCoroutine(DashCoroutine(targetPosition));
     }
 
@@ -124,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = Vector2.zero;
 
-        //animator.SetBool("IsDashing", false); // ปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        animator.SetBool("IsDashing", false); // ปิดสถานะ Dashing <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         isDashing = false;
 
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), false);
@@ -170,5 +211,11 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, dashRadius);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isGrounded = true;
+        animator.SetBool("IsJumping", !isGrounded);
     }
 }

@@ -55,8 +55,11 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(float damageAmount) // ดึงตัวแปรไปไว้ลด HP
     {
+
+        Debug.Log("Player was hit! Damage: " + damageAmount);
+
         CurrentHealth -= damageAmount;
-        Debug.Log("Player HP: " + CurrentHealth);
+        Debug.Log("Player HP after hit: " + CurrentHealth);
 
         if (CurrentHealth <= 0 || CurrentHealth == 0)
         {

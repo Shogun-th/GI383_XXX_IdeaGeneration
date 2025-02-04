@@ -11,12 +11,14 @@ public class ZiplineSystem : MonoBehaviour
     private bool isUsingZipline = false; // ตรวจสอบว่ากำลังโหนอยู่หรือไม่
     private bool hasUsedZipline = false; // ตรวจสอบว่าถูกใช้งานไปแล้วหรือยัง
     private Transform player; // อ้างอิงถึง Player
+    private Animator animator; // ตัวแปร Animator สำหรับควบคุม Animation
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !isUsingZipline && !hasUsedZipline)
         {
             player = collision.transform; // เก็บข้อมูล Transform ของ Player
+            animator = player.GetComponent<Animator>(); // ดึง Animator จาก Player
             Debug.Log("Player entered Zipline trigger!");
         }
     }
@@ -26,6 +28,7 @@ public class ZiplineSystem : MonoBehaviour
         if (collision.CompareTag("Player") && !isUsingZipline)
         {
             player = null; // ล้างข้อมูล Player เฉพาะเมื่อไม่ได้โหน
+            animator = null; // ล้างตัวแปร Animator เมื่อออกจากพื้นที่ Zipline
             Debug.Log("Player exited Zipline trigger!");
         }
     }
@@ -42,7 +45,18 @@ public class ZiplineSystem : MonoBehaviour
     private System.Collections.IEnumerator UseZipline()
     {
         isUsingZipline = true;
+        
+        /*// ตั้งตำแหน่ง Player ให้อยู่ที่จุดเริ่มต้นของ Zipline
+        if (player != null)
+        {
+            player.position = startPoint.position;
+        }*/
 
+        if (animator != null)
+        {
+            animator.SetBool("IsZipping", true); // เปิด Animation ตอนเริ่มโหน
+        }
+        
         // เคลื่อนที่ Player จาก startPoint ไป endPoint
         float time = 0;
         float currentSpeed = initialZiplineSpeed; // เริ่มต้นความเร็วด้วยค่าเริ่มต้น
@@ -65,6 +79,11 @@ public class ZiplineSystem : MonoBehaviour
         if (player != null)
         {
             player.position = finalPosition;
+        }
+        
+        if (animator != null)
+        {
+            animator.SetBool("IsZipping", false); // ปิด Animation เมื่อโหนเสร็จ
         }
 
         isUsingZipline = false;
