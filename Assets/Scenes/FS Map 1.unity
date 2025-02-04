@@ -11048,6 +11048,10 @@ MonoBehaviour:
         name: Player
         icon: {fileID: 21300000, guid: 03f68527bb9c6e949b19929e3758b455, type: 3}
       line: '"Help me, please..."'
+    - character:
+        name: Doctor
+        icon: {fileID: 21300000, guid: 50105c26601990a438ded464d3d68129, type: 3}
+      line: '"Sure, I got you"'
   sceneToLoad: FS Map 2
 --- !u!212 &1461710547
 SpriteRenderer:
