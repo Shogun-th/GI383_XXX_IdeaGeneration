@@ -7,6 +7,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab; // ใส่ Prefab ของศัตรู
     public Transform[] spawnPoints; // เก็บจุดเกิดของศัตรู
     public int enemyCount = 3; // จำนวนศัตรูที่เกิดต่อรอบ
+    public int maxRounds = 5; // จำนวนรอบสูงสุดที่ศัตรูจะเกิด
+    private int currentRound = 0; // รอบปัจจุบัน
     private List<GameObject> activeEnemies = new List<GameObject>(); // เก็บศัตรูที่เกิดแล้ว
 
     private void Start()
@@ -16,7 +18,7 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemies()
     {
-        while (true)
+        while (currentRound < maxRounds)
         {
             yield return new WaitForSeconds(2f); // รอ 2 วินาที ก่อนเช็คว่าศัตรูตายหมดหรือยัง
 
@@ -24,8 +26,10 @@ public class EnemySpawner : MonoBehaviour
             {
                 Debug.Log("All enemies defeated! Spawning new wave...");
                 SpawnWave();
+                currentRound++;
             }
         }
+        Debug.Log("Max rounds reached. No more enemies will spawn.");
     }
 
     private void SpawnWave()
@@ -46,4 +50,6 @@ public class EnemySpawner : MonoBehaviour
         return activeEnemies.Count == 0; // ถ้าศัตรูหมดให้คืนค่า true
     }
 }
+
+
 

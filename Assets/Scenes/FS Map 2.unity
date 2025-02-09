@@ -7835,6 +7835,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5639515463825035982, guid: 3f174bd2e80d03146ae504842d7b9e62, type: 3}
   m_PrefabInstance: {fileID: 921559392}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &921559394 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8096029274139444200, guid: 3f174bd2e80d03146ae504842d7b9e62, type: 3}
+  m_PrefabInstance: {fileID: 921559392}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &921559395 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4747806657774734382, guid: 3f174bd2e80d03146ae504842d7b9e62, type: 3}
+  m_PrefabInstance: {fileID: 921559392}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &967672052
 GameObject:
   m_ObjectHideFlags: 0
@@ -14178,11 +14200,11 @@ PrefabInstance:
     - target: {fileID: 3791061440305752590, guid: 5a9f98f8bafedd74894e324fe80aadf2, type: 3}
       propertyPath: dashCooldownText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 921559394}
     - target: {fileID: 3791061440305752590, guid: 5a9f98f8bafedd74894e324fe80aadf2, type: 3}
       propertyPath: dashCooldownImage
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 921559395}
     - target: {fileID: 4545698832367706963, guid: 5a9f98f8bafedd74894e324fe80aadf2, type: 3}
       propertyPath: m_Name
       value: Player
