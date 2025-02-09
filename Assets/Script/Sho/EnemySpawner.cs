@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // ใช้สำหรับโหลดฉากใหม่
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     public Transform[] spawnPoints; // เก็บจุดเกิดของศัตรู
     public int enemyCount = 3; // จำนวนศัตรูที่เกิดต่อรอบ
     public int maxRounds = 5; // จำนวนรอบสูงสุดที่ศัตรูจะเกิด
+    public string nextSceneName; // กำหนดชื่อฉากถัดไป
+
     private int currentRound = 0; // รอบปัจจุบัน
     private List<GameObject> activeEnemies = new List<GameObject>(); // เก็บศัตรูที่เกิดแล้ว
 
@@ -20,7 +23,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (currentRound < maxRounds)
         {
-            yield return new WaitForSeconds(2f); // รอ 2 วินาที ก่อนเช็คว่าศัตรูตายหมดหรือยัง
+            yield return new WaitForSeconds(2f); // รอ 2 วินาทีก่อนเช็คว่าศัตรูตายหมดหรือยัง
 
             if (AllEnemiesDead())
             {
@@ -29,7 +32,14 @@ public class EnemySpawner : MonoBehaviour
                 currentRound++;
             }
         }
+
         Debug.Log("Max rounds reached. No more enemies will spawn.");
+
+        // ตรวจสอบว่าศัตรูรอบสุดท้ายตายหมดแล้ว
+        yield return new WaitUntil(AllEnemiesDead);
+
+        Debug.Log("All enemies in the last wave are defeated! Changing scene...");
+        SceneManager.LoadScene(nextSceneName); // โหลดฉากใหม่
     }
 
     private void SpawnWave()
@@ -50,6 +60,7 @@ public class EnemySpawner : MonoBehaviour
         return activeEnemies.Count == 0; // ถ้าศัตรูหมดให้คืนค่า true
     }
 }
+
 
 
 

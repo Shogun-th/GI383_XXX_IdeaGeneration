@@ -204,20 +204,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f536253fa260a9a45b06d2b5a6d39f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1
   detectionRange: 5
-  attackRange: 1.5
-  attackCooldown: 2
-  maxHealth: 100
-  damageAmount: 10
+  attackRange: 2
+  attackCooldown: 10
+  maxHealth: 250
+  damageAmount: 20
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 7689261216044094595}
   groundCheckDistance: 0.5
   rb: {fileID: 5725158257301223525}
-  knockbackForce: 5
-  stunDuration: 1
+  knockbackForce: 0
+  stunDuration: 0
 --- !u!95 &7755701077337875830
 Animator:
   serializedVersion: 5

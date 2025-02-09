@@ -23,6 +23,8 @@ public class Boss : MonoBehaviour
     private bool isDead = false;  // เพิ่มตัวแปรเพื่อตรวจสอบสถานะการตาย
     private bool isAttacking = false;
 
+    public BossHealthUI bossHealthUI; // 🔥 ลิงก์ไปที่ UI
+
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.5f;
@@ -37,6 +39,11 @@ public class Boss : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        if (bossHealthUI != null)
+        {
+            bossHealthUI.SetMaxHealth(maxHealth);
+            bossHealthUI.ShowUI(false); // ซ่อน UI ตอนแรก
+        }
     }
 
     void Update()
@@ -153,6 +160,11 @@ public class Boss : MonoBehaviour
         {
             StartCoroutine(ApplyKnockbackAndStun());
         }
+        if (bossHealthUI != null)
+        {
+            bossHealthUI.UpdateHealth(currentHealth); // 🔥 อัปเดตหลอดเลือด
+        }
+
     }
 
     private IEnumerator ApplyKnockbackAndStun()
@@ -175,6 +187,10 @@ public class Boss : MonoBehaviour
         if (isDead) return;  // ป้องกันการเรียก Die ซ้ำ
 
         isDead = true;
+        if (bossHealthUI != null)
+        {
+            bossHealthUI.ShowUI(false); // ซ่อน UI เมื่อบอสตาย
+        }
 
         // ปิดแอนิเมชันอื่น ๆ ก่อนเล่นแอนิเมชัน Die
         animator.SetBool("Attack", false);
@@ -182,6 +198,7 @@ public class Boss : MonoBehaviour
 
         animator.SetTrigger("Die");  // เรียกแอนิเมชัน Die
         Debug.Log("Enemy died!");
+
 
         StartCoroutine(WaitAndDestroy());
     }
@@ -227,5 +244,12 @@ public class Boss : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + Vector3.right * detectionRange * (facingRight ? 1 : -1), Color.red);
         Debug.DrawLine(transform.position, transform.position + Vector3.right * attackRange * (facingRight ? 1 : -1), Color.yellow);
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.green);
+    }
+    public void ActivateBoss()
+    {
+        if (bossHealthUI != null)
+        {
+            bossHealthUI.ShowUI(true); // แสดง UI เมื่อเริ่มต่อสู้
+        }
     }
 }
