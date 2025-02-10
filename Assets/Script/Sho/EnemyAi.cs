@@ -10,8 +10,12 @@ public class EnemyAi : MonoBehaviour
     public float maxHealth = 100f;
     public float damageAmount = 10f;
     public LayerMask groundLayer;
+    public LayerMask enemyLayer;
+    private float avoidCooldown = 0f;  // ดีเลย์ระหว่างการหลบศัตรู
+    public float avoidCooldownTime = 1f; // กำหนดเวลา cooldown
 
     private Transform player;
+    public Transform enemyCheckPoint;
     private float attackTimer = 0f;
     private float currentHealth;
     private bool isPatrolling = true;
@@ -23,6 +27,7 @@ public class EnemyAi : MonoBehaviour
 
     public Transform groundCheck;
     public float groundCheckDistance = 0.5f;
+    public float enemyCheckRadius = 0.5f;
 
     public Rigidbody2D rb;
     public float knockbackForce = 5f;
@@ -39,8 +44,18 @@ public class EnemyAi : MonoBehaviour
     void Update()
     {
         if (isDead) return;  // หยุดการทำงานใน Update ถ้าศัตรูตายแล้ว
-
         if (isStunned) return;
+
+        // นับเวลาคูลดาวน์ก่อนเช็คการหลบศัตรู
+        if (avoidCooldown <= 0)
+        {
+            AvoidOtherEnemies();
+            avoidCooldown = avoidCooldownTime;  // ตั้งคูลดาวน์ใหม่
+        }
+        else
+        {
+            avoidCooldown -= Time.deltaTime;
+        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -76,6 +91,21 @@ public class EnemyAi : MonoBehaviour
         DrawDetectionVisuals();
     }
 
+    private void AvoidOtherEnemies()
+    {
+        Collider2D enemyNearby = Physics2D.OverlapCircle(enemyCheckPoint.position, enemyCheckRadius, enemyLayer);
+
+        if (enemyNearby != null)  // ถ้ามีศัตรูอยู่ข้างหน้า
+        {
+            Vector3 directionToEnemy = enemyNearby.transform.position - transform.position;
+
+            // เช็คว่าศัตรูอยู่ด้านหน้าจริงๆ ก่อนจะ Flip()
+            if ((facingRight && directionToEnemy.x > 0) || (!facingRight && directionToEnemy.x < 0))
+            {
+                Flip();
+            }
+        }
+    }
     private void Patrol()
     {
         if (IsAtEdge() || !IsGrounded())
@@ -224,4 +254,10 @@ public class EnemyAi : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + Vector3.right * attackRange * (facingRight ? 1 : -1), Color.yellow);
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckDistance, Color.green);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(enemyCheckPoint.position, enemyCheckRadius);
+    }
 }
+
