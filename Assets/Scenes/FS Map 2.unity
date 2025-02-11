@@ -8644,7 +8644,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.88
+  orthographic size: 5.3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8669,8 +8669,8 @@ Transform:
   m_GameObject: {fileID: 1088317115}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.8, y: 7.73, z: 24.941399}
-  m_LocalScale: {x: 0.7528865, y: 1.3444401, z: 1.3444401}
+  m_LocalPosition: {x: -4.5857964, y: 6.9114876, z: 24.941399}
+  m_LocalScale: {x: 1.1841398, y: 2.9180586, z: 2.1145353}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 656444037}
@@ -8682,7 +8682,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088317115}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
@@ -8895,7 +8895,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1255941209}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 5.88
+    OrthographicSize: 5.3
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -8921,8 +8921,8 @@ Transform:
   m_GameObject: {fileID: 1119395221}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.35778, y: 3.96, z: 24.941399}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -8.83778, y: 3.668548, z: 24.941399}
+  m_LocalScale: {x: 0.029541057, y: 0.007976085, z: 0.029541057}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 645667034}
@@ -11927,17 +11927,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19131088, y: 0.8733827}
   m_EdgeRadius: 0
---- !u!114 &1571958853 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7543275123492867429, guid: 328d0648d705c9c4c9ab6bd6604eb80b, type: 3}
-  m_PrefabInstance: {fileID: 201270151}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc8beab6e30daad4cadbd546033e1a02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1574552699
 GameObject:
   m_ObjectHideFlags: 0
@@ -12436,10 +12425,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -12.368266, y: 4.9780545}
-      - {x: -12.428464, y: -8.104126}
-      - {x: 9.587298, y: -8.001199}
-      - {x: 9.464767, y: 4.902464}
+    - - {x: -11.713555, y: 4.2005935}
+      - {x: -11.646121, y: -7.285461}
+      - {x: 8.637078, y: -7.3743806}
+      - {x: 8.661189, y: 4.224445}
   m_UseDelaunayMesh: 0
 --- !u!4 &1652389835
 Transform:
@@ -13014,7 +13003,7 @@ MonoBehaviour:
   _layers:
   - {fileID: 941208688}
   - {fileID: 1242056117}
-  - {fileID: 1571958853}
+  - {fileID: 0}
 --- !u!4 &1785702312
 Transform:
   m_ObjectHideFlags: 0
